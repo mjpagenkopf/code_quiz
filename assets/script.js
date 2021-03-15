@@ -10,7 +10,7 @@ let firstChoice = document.querySelector(".first"); //choice a
 let secondChoice = document.querySelector(".second"); //choice b
 let thirdChoice = document.querySelector(".third"); //choice c
 let fourthChoice = document.querySelector(".fourth"); //choice d
-let answerButton = document.querySelector(".box");
+// let answerButton = 
 
 let showQuestion;
 let questionIndex;
@@ -78,13 +78,23 @@ function startQuiz() {
     secondChoice.textContent = choiceB;
     thirdChoice.textContent = choiceC;
     fourthChoice.textContent = choiceD;
-    chooseAnswer();
-  }
+    if (correctAnswer == fourthChoice) {
+      correctAnswer.addEventListener("click", function() {
+      showQuestion = questions[1].title;
+      choiceA = questions[1].choices[0];
+      choiceB = questions[1].choices[1];
+      choiceC = questions[1].choices[2];
+      choiceD = questions[1].choices[3];
 
-  function chooseAnswer() {
-   if (correctAnswer === fourthChoice)
-   nextQuestion();
-  }
+      currentQuestion()
+      })
+    }
+}
+
+  // function chooseAnswer() {
+  //   for (let i = 0; i < questions.length; i++) {
+  //  nextQuestion();
+  // }
 
 
 
@@ -99,11 +109,11 @@ function startTimer() {
       timerElement.textContent = timerCount;
       if (timerCount >= 0) {
         // Tests if win condition is met
-        if (isWin && timerCount > 0) {
-          // Clears interval and stops timer
-          clearInterval(timer);
-          winQuiz();
-        }
+        // if (isWin && timerCount > 0) {
+        //   // Clears interval and stops timer
+        //   clearInterval(timer);
+        //   winQuiz();
+        // }
       }
       // Tests if time has run out
       if (timerCount === 0) {
@@ -149,22 +159,6 @@ resetButton.addEventListener("click", resetQuiz);
 
 
 //when questions-page displays, function showQuestions should 
-
-
-// for (currentQuestionIndex in questions) {
-//       questionEl = document.createElement("li");
-//       questionEl.innerHTML = `Question: ${questions[currentQuestionIndex].title}`;
-//     //   stuffList.append(listItem);
-//     // }
-
-
-
-
-
-
-
-
-
 
 
 // let currentQuestionIndex = 0;
