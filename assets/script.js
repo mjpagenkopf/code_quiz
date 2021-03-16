@@ -1,26 +1,20 @@
-let startPage = document.querySelector(".start-page");
-let questionsPage = document.querySelector(".questions-page");
-let highScoresPage = document.querySelector(".high-scores-page");
-let startButton = document.querySelector(".start-button");
-var timerElement = document.querySelector(".timer-count");
+const startPage = document.getElementsByClassName("start-page")[0];
+const questionsPage = document.getElementsByClassName("questions-page")[0];
+const highScoresPage = document.querySelector(".high-scores-page")[0];
+let startButton = document.getElementById("start-button");
+let timerElement = document.querySelector(".timer-count");
 
-let questionBox = document.querySelector(".question-box");
-let questionText = document.querySelector(".question-text");
-let firstChoice = document.querySelector(".first"); //choice a
-let secondChoice = document.querySelector(".second"); //choice b
-let thirdChoice = document.querySelector(".third"); //choice c
-let fourthChoice = document.querySelector(".fourth"); //choice d
-// let answerButton = 
-
-let showQuestion;
-let questionIndex;
-let choiceA;
-let choiceB;
-let choiceC;
-let choiceD;
+const questionText = document.getElementsByClassName("question-text")[0];
+let buttonBox = document.getElementsByClassName("button-box");
+let answerButton = document.getElementsByClassName("answer-button");
+let firstChoice = document.getElementById("0"); //choice a
+let secondChoice = document.getElementById("1"); //choice b
+let thirdChoice = document.getElementById("2"); //choice c
+let fourthChoice = document.getElementById("3"); //choice d
 
 let timer;
 let timerCount;
+let questionsIndex = 0; 
 
 //array of 5 objects    questions = ["0", "1", "2", "3", "4"]
 let questions = [
@@ -56,110 +50,168 @@ let questions = [
 
 ];
 
-let correctAnswer;
 
-// The startQuiz function is called when the start button is clicked
-function startQuiz() {
-    timerCount = 100;
-    showQuestion = questions[0].title;  //.sort(()) => Math.random() - .5);
-    choiceA = questions[0].choices[0];
-    choiceB = questions[0].choices[1];
-    choiceC = questions[0].choices[2];
-    choiceD = questions[0].choices[3];
-    correctAnswer = questions[0].answer;
-    questionIndex = 0;
-    startTimer()
-    currentQuestion()
+
+startButton.addEventListener("click", function() {
+  startPage.setAttribute("style", "display:none");
+  questionsPage.removeAttribute("style");
+  //start timer here
+  timerCount = 100;
+  startTimer();
+  populateQuestionPage(questionsIndex);
+})
+
+
+function populateQuestionPage(idx) {
+  let currentQuestion = questions[idx]
+  forQuestionPageArrayTitle(currentQuestion)
 }
-    
-  function currentQuestion() {
-    questionText.textContent = showQuestion;
-    firstChoice.textContent = choiceA;
-    secondChoice.textContent = choiceB;
-    thirdChoice.textContent = choiceC;
-    fourthChoice.textContent = choiceD;
-    if (correctAnswer == fourthChoice) {
-      correctAnswer.addEventListener("click", function() {
-      showQuestion = questions[1].title;
-      choiceA = questions[1].choices[0];
-      choiceB = questions[1].choices[1];
-      choiceC = questions[1].choices[2];
-      choiceD = questions[1].choices[3];
 
-      currentQuestion()
-      })
+function forQuestionPageArrayTitle(obj) {
+  questionText.textContent = obj.title
+  populateQuestionPage.textContent = obj.choices
+}
+
+function populateAnswerButtons(arr) {
+    for (let i = 0; i < arr.length; i++)
+    {
+        const thisButton = document.getElementById(`{i}`)
+        thisButton.textContent = arr[i]
+        if()
     }
+  }
+
+questionsIndex++
+
+populateQuestionPage;
+
+// The setTimer function starts and stops the timer and triggers winQuiz() and loseQuiz()
+function startTimer() {
+  // Sets timer
+  timer = setInterval(function() {
+    timerCount--;
+    timerElement.textContent = timerCount;
+    if (timerCount >= 0) {
+      // Tests if win condition is met
+      // if (isWin && timerCount > 0) {
+      //   // Clears interval and stops timer
+      //   clearInterval(timer);
+      //   winQuiz();
+      // }
+    }
+    // Tests if time has run out
+    if (timerCount === 0) {
+      // Clears interval
+      // clearInterval(timer);
+      loseQuiz();
+    }
+  }, 1000);
 }
+
+
+
+// Bonus: Add reset button
+var resetButton = document.querySelector(".reset-button");
+
+function resetQuiz() {
+// Resets win and loss counts
+winCounter = 0;
+loseCounter = 0;
+// Renders win and loss counts and sets them into client storage
+setWins()
+setLosses()
+}
+// Attaches event listener to button
+resetButton.addEventListener("click", resetQuiz)
+
+
+
+
+/* Notes from Sam */
+// const startButton = document.getElementById("start")
+// const startDiv = document.getElementsByClassName("start")[0]
+// const quizDiv = document.getElementsByClassName("quiz")[0]
+// const questionTitle = document.getElementById("question-title")
+
+// let currentIndex = 0; //loads at initial 
+
+// startButton.addEventListener("click", function()) {
+// startDiv.setAttribute("style", "display:none;")
+// quizDiv.setAttribute("style", "display:block;")
+// populateQuestionDiv(currentIndex)
+// });
+
+// function populateQuestionDiv(idx) {          //reserved keywords (idx, obj, arr, str)
+//   const currentQuestion = questions[idx]
+//   populateQuestionTitle(currentQuestion)
+// }
+
+// function populateQuestionTitle(obj) {          //was obj
+//   questionTitle.textContent = obj.title
+//   populateQuestionDiv.choices)
+// }
+// //title is entered into question-title
+
+// function populateAnswerButtons(arr) {
+//   for (let i = 0; i < arr.length; i++)
+//   {
+//       const thisButton = document.getElementById(`{i}`)
+//       thisButton.textContent = arr[i]
+//   }
+// }
+
+// function checkAnswerAndSeeIfCorrect() {
+//   const answerButtons = document.getElementsByClassName("answer-button")
+//   for (let i = 0; i < answerButtons.length; i++) {console.log(answerButtons[i].textContent)answerbuttons[i].addEventListener("click", function(e) {
+//     e.preventDefault
+//   })
+// }
+// currentIndex++
+// populateQuestionDiv
+
+
+/* FROM OLDER VERSION */
+// let correctAnswer;
+
+// // The startQuiz function is called when the start button is clicked
+// function startQuiz() {
+//     timerCount = 100;
+//     showQuestion = questions[0].title;  //.sort(()) => Math.random() - .5);
+//     choiceA = questions[0].choices[0];
+//     choiceB = questions[0].choices[1];
+//     choiceC = questions[0].choices[2];
+//     choiceD = questions[0].choices[3];
+//     correctAnswer = questions[0].answer;
+//     questionIndex = 0;
+//     startTimer()
+//     currentQuestion()
+// }
+    
+//   function currentQuestion() {
+//     questionText.textContent = showQuestion;
+//     firstChoice.textContent = choiceA;
+//     secondChoice.textContent = choiceB;
+//     thirdChoice.textContent = choiceC;
+//     fourthChoice.textContent = choiceD;
+//     if (correctAnswer == fourthChoice) {
+//       correctAnswer.addEventListener("click", function() {
+//       showQuestion = questions[1].title;
+//       choiceA = questions[1].choices[0];
+//       choiceB = questions[1].choices[1];
+//       choiceC = questions[1].choices[2];
+//       choiceD = questions[1].choices[3];
+
+//       currentQuestion()
+//       })
+//     }
+// }
 
   // function chooseAnswer() {
   //   for (let i = 0; i < questions.length; i++) {
   //  nextQuestion();
   // }
 
-
-
-
-
-
-// The setTimer function starts and stops the timer and triggers winQuiz() and loseQuiz()
-function startTimer() {
-    // Sets timer
-    timer = setInterval(function() {
-      timerCount--;
-      timerElement.textContent = timerCount;
-      if (timerCount >= 0) {
-        // Tests if win condition is met
-        // if (isWin && timerCount > 0) {
-        //   // Clears interval and stops timer
-        //   clearInterval(timer);
-        //   winQuiz();
-        // }
-      }
-      // Tests if time has run out
-      if (timerCount === 0) {
-        // Clears interval
-        clearInterval(timer);
-        loseQuiz();
-      }
-    }, 1000);
-  }
-
-
-startButton.addEventListener("click", function() {
-    startPage.setAttribute("style", "display:none");
-    questionsPage.removeAttribute("style");
-    //start timer here
-})
-
-// Attach event listener to start button to call startGame function on click
-startButton.addEventListener("click", startQuiz);
-
-// Calls init() so that it fires when page opened
-// init();
-
-// Bonus: Add reset button
-var resetButton = document.querySelector(".reset-button");
-
-function resetQuiz() {
-  // Resets win and loss counts
-  winCounter = 0;
-  loseCounter = 0;
-  // Renders win and loss counts and sets them into client storage
-  setWins()
-  setLosses()
-}
-// Attaches event listener to button
-resetButton.addEventListener("click", resetQuiz);
-
-
-
-
-
-
-
-
 //when questions-page displays, function showQuestions should 
-
 
 // let currentQuestionIndex = 0;
 
@@ -170,29 +222,17 @@ resetButton.addEventListener("click", resetQuiz);
 //     questionEL.document.write = questions[0].title;
 // }
 
-
-
-
-
 // questionRenderer(questions[currentQuestionIndex]);
 
-
 // let result = questionRenderer(questions[0]);
-
-
 
         // console.log("Question: "+obj.title)
         // console.log("Answers: "+ obj.answer)
         // console.log("Options: " + obj.options)
 
-
-
-
 // for (let i = 0; i < questions.length;)
 
 //when question index is over, you have an if statement. show high score
-
-
 
 //need two functions 
 //function for displaying function that makes the title the question for each question

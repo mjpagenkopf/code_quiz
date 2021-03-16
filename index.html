@@ -11,25 +11,33 @@
     <div class="start-page">
         <h1>JavaScript Quiz</h1>
         <p>Lorem ipsum </p>
-
-        <button class="start-button">START</button>
-            
-
+        <button id="start-button">START</button>
     </div>
 
+
+
     <div class="questions-page" style="display:none">
-        <div class="question-box" aria-role="" aria-label="carousel">
             <!-- each question and answers display here -->
-            <h2 class="question-text">Question</h2>
-            <button class="first">A</button>
+            <h2 class="question-text">Question</h2><!-- questionText -->
+
+            <div class="button-box">
+                <button class="answer-button" id="0">A</button>
+                <button class="answer-button" id="1">B</button>
+                <button class="answer-button" id="2">C</button>
+                <button class="answer-button" id="3">D</button>
+            </div>
+
+
+
+            <!-- <button class="first">A</button>
             <button class="second">B</button>
             <button class="third">C</button>
             <button class="fourth">D</button>
         </div>
-        
+         -->
         <div class= "card timer">
-            <div class = "timer-text">
-            <div class="large-font timer-count">10</div>
+            <div id="timer-text">
+            <div class="large-font timer-count">100</div>
             <h3>seconds remaining</h3>
           </div>
 
