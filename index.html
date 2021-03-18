@@ -27,28 +27,25 @@
                 <button class="answer-button" id="3">D</button>
             </div>
 
+            <h3 id="score-board">Score: </h3>
 
-
-            <!-- <button class="first">A</button>
-            <button class="second">B</button>
-            <button class="third">C</button>
-            <button class="fourth">D</button>
-        </div>
-         -->
-        <div class= "card timer">
+        <div class= "card timer" style=>
             <div id="timer-text">
             <div class="large-font timer-count">100</div>
             <h3>seconds remaining</h3>
+            <!-- <button class="reset-button">Reset Score</button> -->
           </div>
-
-          <button class="reset-button">Reset Score</button>
-    
-    
-    
     </div>
 
     <div class ="high-scores-page" style="display:none">
-
+        <div class="card"></div>
+            <h1>High Score</h1>
+            <form id="score-form" method="POST">
+                <label for="score-text">Add Your Name:</label>
+                <input type="text">
+            </form>
+            <p>HIGH SCORES LIST <span id="score-count">0</span></p>
+            <ul id="score-list"></ul>
     
     </div>
 
