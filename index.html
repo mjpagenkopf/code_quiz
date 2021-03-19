@@ -16,7 +16,7 @@
 
 
 
-    <div class="questions-page" style="display:none">
+    <div class="questions-page" style="display:none" style="background-color: blue;">
             <!-- each question and answers display here -->
             <h2 class="question-text">Question</h2><!-- questionText -->
 
@@ -29,24 +29,41 @@
 
             <h3 id="score-board">Score: </h3>
 
-        <div class= "card timer" style=>
+        <!-- <div class="card-timer" style="display:none"> -->
             <div id="timer-text">
-            <div class="large-font timer-count">100</div>
-            <h3>seconds remaining</h3>
+                <div class="large-font timer-count">100
+
+                </div>
+                    <h3>seconds remaining</h3>
             <!-- <button class="reset-button">Reset Score</button> -->
-          </div>
+            </div>
     </div>
 
     <div class ="high-scores-page" style="display:none">
-        <div class="card"></div>
+
+        <!-- <div class="card"> -->
+
             <h1>High Score</h1>
+            </h2>
             <form id="score-form" method="POST">
+
+                <div class="input-name">
                 <label for="score-text">Add Your Name:</label>
-                <input type="text">
+
+
+                <input type="text" name="full-name" id="full-name" placeholder="Full Name">
+
+
+                <button type="submit" class="btn" id="save-btn" onclick="saveScore(event)" disabled>Save Score</button>
+                </div>
+
             </form>
+
             <p>HIGH SCORES LIST <span id="score-count">0</span></p>
+
             <ul id="score-list"></ul>
-    
+
+        <!-- </div> -->
     </div>
 
     

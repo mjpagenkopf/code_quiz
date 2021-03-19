@@ -7,13 +7,14 @@ let timerElement = document.querySelector(".timer-count");
 let scoreBoard = document.getElementById("score-board");
 
 const questionText = document.getElementsByClassName("question-text")[0];
-let buttonBox = document.getElementsByClassName("button-box");
 let answerButton = document.getElementsByClassName("answer-button")[0];
 
 let scoreForm = document.getElementById("score-form");
 let scoreText = document.getElementById("score-text");
 let scoreCount = document.getElementById("score-count");
 let scoreList = document.getElementById("score-list");
+let user = document.getElementById("full-name");
+let saveButton = document.getElementById("save-btn");
 
 let timer;
 let timerCount;
@@ -21,8 +22,9 @@ let questionsIndex = 0;
 let currentQuestion;
 let currentAnswers;
 let finishedQuiz;
-let score = 0;
+let score = 1;
 let thisButton; 
+
 
 //array of 5 objects    questions = ["0", "1", "2", "3", "4"]
 let questions = [
@@ -61,26 +63,28 @@ let questions = [
 
 startButton.addEventListener("click", function() { 
   startPage.setAttribute("style", "display:none");
-  questionsPage.removeAttribute("style");
+  questionsPage.removeAttribute("style", "display:none");
   // timerCard.removeAttribute("style");
   //start timer here
   timerCount = 100;
   startTimer();
-  
   populateQuestionPage(questionsIndex); //questionsIndex is 0
 })
+
+
     //REMEMBER: questionsIndex is the parameter idx, which is essentially 0
 function populateQuestionPage(idx) {   //idx is a placeholder: AS IN PARAMETERS ARE PLACEHOLDERS - in this case = questionsIndex aka 0
   currentQuestion = questions[idx] //questions[idx] is also currently representing 0
   currentAnswers = questions[idx].choices
-  
   forQuestionPageArrayTitle(currentQuestion) //currentQuestion = to first object of questions array
   populateAnswerButtons(currentAnswers) 
 }
 
+
 function forQuestionPageArrayTitle(obj) {
   questionText.textContent = obj.title
 }
+
 
 function populateAnswerButtons(arr) { //arr is equal to currentAnswers
     for (let i = 0; i < arr.length; i++)
@@ -91,29 +95,58 @@ function populateAnswerButtons(arr) { //arr is equal to currentAnswers
     }
   }
 
+
 function checkAnswerAndSeeIfCorrect(e) {  //e equals the word "event"
     // const answerButtons = document.getElementsByClassName("answer-button") //not being used
       if (e.target.textContent === questions[questionsIndex].answer) {
         scoreBoard.innerHTML = (score++)
-        // score++
+        // scoreBoard.setText('Points: '+score);
         questionsIndex++
         populateQuestionPage(questionsIndex)
       if (questionsIndex === 4)
-          populateHighScoresPage();
-      }  
-    }
+          thisButton.addEventListener("click", function() {
+          highScoresPage.removeAttribute("style");
+          questionsPage.setAttribute("style", "display:none");
+        populateHighScoresPage();
+ })
+}}
 
-function populateHighScoresPage() {
-      thisButton.addEventListener("click", function() {
-        questionsPage.setAttribute("style", "display:none");
-        highScoresPage.removeAttribute("style");
-        // timerCard.setAttribute("style", "display:none");
-        prompt("fill in your name:", "enter name");
 
+const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+let recentScore = localStorage.getItem("recentScore")
+
+const maxHighScore = 5;
+
+user.addEventListener("keyup", () => {
+  saveButton.disabled = !user.value;
+});
+
+function populateHighScoresPage(e) { 
+  e.preventDefault();
+  scoreCount.textContent = recentScore;
+  score = {
+    score: recentScore,
+    name: user.value,
+  };
+  
+  highScores.push(score);
+  // highScores.sort((a, b) => b.score - a.score);
+  highScores.splice(5);
+
+  localStorage.setItem("highScores", JSON.stringify(highScores));
+  window.location.assign("/");
+  // let user = userInput.value.trim();
+  //    input = user
+  //     scoreText.textContent = 
+  //       setScoreCard();
     
-        
-    })
-}
+};
+
+
+// let scoreForm = document.getElementById("score-form");
+// let scoreText = document.getElementById("full-name");
+// let scoreCount = document.getElementById("score-count");
+// let scoreList = document.getElementById("score-list");
 
       // scoreBoard.textContent = score;
 // The setTimer function starts and stops the timer 
@@ -141,7 +174,7 @@ function startTimer() {
     }
   }, 1000);
 }
-
+      
 
 
 
