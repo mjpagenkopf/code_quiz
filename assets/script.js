@@ -26,6 +26,7 @@ let score = 1;
 let thisButton; 
 
 
+
 //array of 5 objects    questions = ["0", "1", "2", "3", "4"]
 let questions = [
     { //think of this as [0]
@@ -179,7 +180,15 @@ function startTimer() {
 
 
 
-
+// var hasStorage = (function() {
+//   try {
+//     localStorage.setItem(mod, mod);
+//     localStorage.removeItem(mod);
+//     return true;
+//   } catch (exception) {
+//     return false;
+//   }
+// }());
 
 
 
