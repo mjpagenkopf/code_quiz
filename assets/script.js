@@ -32,27 +32,27 @@ let questions = [
     },
         
     { //[1]
-        title: "this is for question two?",
-        answer: "blue",
-        choices: ["green", "red", "yellow", "blue"],
+        title: "what does this represent 'i++'?",
+        answer: "increments",
+        choices: ["increments", "index", "irrational", "implement"],
     },
 
     { //[2]
-        title: "this is question three?",
-        answer: "blue",
-        choices: ["green", "red", "yellow", "blue"],
+        title: "what do you call what is inside a function's ()?",
+        answer: "parameters",
+        choices: ["markers", "barriers", "returns", "parameters"],
     },
 
     { //[3]
-        title: "This is question four?",
-        answer: "blue",
-        choices: ["green", "red", "yellow", "blue"],
+        title: "What is document.GetElementById?",
+        answer: "Document Method",
+        choices: ["Document Proxy", "Document Method", "Document Turn", "Nothing"],
     },
 
     { //[4]
-        title: "This will be question five?",
-        answer: "blue",
-        choices: ["green", "red", "yellow", "blue"],
+        title: "What is an example of function(event)",
+        answer: "submit",
+        choices: ["major", "protest", "submit", "center"],
     },
 
 ];
