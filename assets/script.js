@@ -9,10 +9,11 @@ let scoreBoard = document.getElementById("score-board");
 const questionText = document.getElementsByClassName("question-text")[0];
 let answerButton = document.getElementsByClassName("answer-button")[0];
 
+let scoreList = document.getElementById("score-list");
 let scoreForm = document.getElementById("score-form");
 let scoreText = document.getElementById("score-text");
 let scoreCount = document.getElementById("score-count");
-let scoreList = document.getElementById("score-list");
+
 let user = document.getElementById("full-name");
 let saveButton = document.getElementById("save-btn");
 
@@ -22,7 +23,7 @@ let questionsIndex = 0;
 let currentQuestion;
 let currentAnswers;
 let finishedQuiz;
-let score = 1;
+let score = 0;
 let thisButton; 
 
 
@@ -65,7 +66,6 @@ let questions = [
 startButton.addEventListener("click", function() { 
   startPage.setAttribute("style", "display:none");
   questionsPage.removeAttribute("style", "display:none");
-  // timerCard.removeAttribute("style");
   //start timer here
   timerCount = 100;
   startTimer();
@@ -76,7 +76,7 @@ startButton.addEventListener("click", function() {
     //REMEMBER: questionsIndex is the parameter idx, which is essentially 0
 function populateQuestionPage(idx) {   //idx is a placeholder: AS IN PARAMETERS ARE PLACEHOLDERS - in this case = questionsIndex aka 0
   currentQuestion = questions[idx] //questions[idx] is also currently representing 0
-  currentAnswers = questions[idx].choices
+  currentAnswers = questions[idx].choices;
   forQuestionPageArrayTitle(currentQuestion) //currentQuestion = to first object of questions array
   populateAnswerButtons(currentAnswers) 
 }
@@ -88,8 +88,7 @@ function forQuestionPageArrayTitle(obj) {
 
 
 function populateAnswerButtons(arr) { //arr is equal to currentAnswers
-    for (let i = 0; i < arr.length; i++)
-    {
+    for (let i = 0; i < arr.length; i++) {
         thisButton = document.getElementById(`${i}`) //template literals
         thisButton.textContent = arr[i] //questions[idx].choices->currentAnswers->arr
         thisButton.addEventListener("click", checkAnswerAndSeeIfCorrect) //
@@ -97,59 +96,116 @@ function populateAnswerButtons(arr) { //arr is equal to currentAnswers
   }
 
 
-function checkAnswerAndSeeIfCorrect(e) {  //e equals the word "event"
+function checkAnswerAndSeeIfCorrect(event) {  //e equals the word "event"
     // const answerButtons = document.getElementsByClassName("answer-button") //not being used
-      if (e.target.textContent === questions[questionsIndex].answer) {
-        scoreBoard.innerHTML = (score++)
-        // scoreBoard.setText('Points: '+score);
+      if (event.target.textContent === questions[questionsIndex].answer) {
+        score++
         questionsIndex++
-        populateQuestionPage(questionsIndex)
-      if (questionsIndex === 4)
+        scoreBoard.textContent = "Score: " + score; 
+      //   populateQuestionPage(questionsIndex)
+      //  if (event.target.textContent !== questions[questionsIndex].answer) 
+      //   timerElement.textContent = timerCount - 10;
+        populateQuestionPage(questionsIndex);
+      // WHAT IS THE EXIT CONDITION?
+        if (questionsIndex === 4) {
+          clearInterval(timer);
           thisButton.addEventListener("click", function() {
           highScoresPage.removeAttribute("style");
           questionsPage.setAttribute("style", "display:none");
-        populateHighScoresPage();
- })
-}}
+        renderScoreToDOM();
+      })
+    } 
+  }
+}
+
+let theScoreVariable = []; 
+//this function is trying to create a running list of users as li elements
+function renderScoreToDOM() {
+    
+  // scoreList.innerHTML = ""; //id = "score-list"
+  // scoreCount.textContent = "Score: " + score; //id = "score-count"
+  
+  //for adding new name to li
+  for (let i = 0; i < theScoreVariable.length; i++) {
+    theScoreVariable = theScoreVariable[i];
+
+    let li = document.createElement("li");
+    li.textContent = theScoreVariable;
+    li.setAttribute("data-index", i);
+
+   /*  li.appendChild();
+    scoreList.appendChild(li); //id = "score-list" */
+  }
+}
+
+//this function is called below
+function init() {
+  let storedScores = JSON.parse(localStorage.getItem("theScoreVariable"));
+  //if scores are retrieved from localStorage, update the list
+  if (storedScores !== null) {
+    theScoreVariable = storedScores;
+  }
+
+  renderScoreToDOM();
+}
 
 
-const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-let recentScore = localStorage.getItem("recentScore")
+function storedScoresFunction() { 
+  // Stringify and set key in localStorage to todos array
+  localStorage.setItem("Scores", JSON.stringify(theScoreVariable));
+}
 
-const maxHighScore = 5;
+// let scoreEntryButton = document.getElementById("save-btn");
 
-user.addEventListener("keyup", () => {
-  saveButton.disabled = !user.value;
+scoreForm.button.addEventListener("click", function(event) {
+event.preventDefault();
+
+let scoreInput = scoreText.value.trim();
+
+if (scoreInput === "") {
+  return;
+}
+  
+theScoreVariable.push(scoreInput);
+scoreText.value = "";
+
+storedScoresFunction();
+renderScoreToDOM();
 });
 
-function populateHighScoresPage(e) { 
-  e.preventDefault();
-  scoreCount.textContent = recentScore;
-  score = {
-    score: recentScore,
-    name: user.value,
-  };
+scoreList.addEventListener("click", function(event) {
+  let element = event.target;
+
+  if (element.matches("button") === true) {
+
+    let index = element.parent.Element.getAttribute("data-index");
+    todos.splice(index, 1);
+
+    storedScoresFunction();
+    renderScoreToDOM();
+  }
+});
+
+init()
+
+
+//   localStorage.setItem("highScores", JSON.stringify(highScores));
+//   window.location.assign("/");
   
-  highScores.push(score);
-  // highScores.sort((a, b) => b.score - a.score);
-  highScores.splice(5);
+// }
+// };
 
-  localStorage.setItem("highScores", JSON.stringify(highScores));
-  window.location.assign("/");
-  // let user = userInput.value.trim();
-  //    input = user
-  //     scoreText.textContent = 
-  //       setScoreCard();
-    
-};
+// const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
+// let recentScore = localStorage.getItem("recentScore")
+
+// const maxHighScore = 5;
+
+// user.addEventListener("keyup", () => {
+//   saveButton.disabled = !user.value;
+// });
 
 
-// let scoreForm = document.getElementById("score-form");
-// let scoreText = document.getElementById("full-name");
-// let scoreCount = document.getElementById("score-count");
-// let scoreList = document.getElementById("score-list");
 
-      // scoreBoard.textContent = score;
 // The setTimer function starts and stops the timer 
 function startTimer() {
   // Sets timer

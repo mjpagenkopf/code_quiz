@@ -16,7 +16,7 @@
 
 
 
-    <div class="questions-page" style="display:none" style="background-color: blue;">
+    <div class="questions-page" style="display:none">
             <!-- each question and answers display here -->
             <h2 class="question-text">Question</h2><!-- questionText -->
 
@@ -45,23 +45,24 @@
 
             <h1>High Score</h1>
             </h2>
-            <form>     <!-- id="score-form" method="POST"> -->
+            <form id="score-form" method="POST">
 
                 <div class="input-name">
                 <label for="score-text">Add Your Name:</label>
 
 
-                <input type="text" name="full-name" id="full-name" placeholder="Full Name">
+                <input type="text" name="full-name" id="full-name" placeholder="Full Name" />
 
 
-                <button type="submit" class="btn" id="save-btn" onclick="saveScore(event)" disabled>Save Score</button>
+                <button onclick="" class="btn" id="save-btn"  >Save Score</button>  <!-- onclick="saveScore(event)" -->    <!-- disabled -->
                 </div>
 
             </form>
 
-            <p>HIGH SCORES LIST <span id="score-count">0</span></p>
+            <p>HIGH SCORES LIST: <span id="score-count">0</span>
+            </p><!--                        scoreCount -->
 
-            <ul id="score-list"></ul>
+            <ul id="score-list"></ul> <!-- scoreList -->
 
         <!-- </div> -->
     </div>
