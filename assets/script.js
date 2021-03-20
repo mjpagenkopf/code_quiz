@@ -9,11 +9,8 @@ let scoreBoard = document.getElementById("score-board");
 const questionText = document.getElementsByClassName("question-text")[0];
 let answerButton = document.getElementsByClassName("answer-button")[0];
 
-let scoreList = document.getElementById("score-list");
-let scoreForm = document.getElementById("score-form");
-let scoreText = document.getElementById("score-text");
+let userName = document.getElementById("user-name");
 let scoreCount = document.getElementById("score-count");
-
 let user = document.getElementById("full-name");
 let saveButton = document.getElementById("save-btn");
 
@@ -22,10 +19,8 @@ let timerCount;
 let questionsIndex = 0; 
 let currentQuestion;
 let currentAnswers;
-let finishedQuiz;
 let score = 0;
 let thisButton; 
-
 
 
 //array of 5 objects    questions = ["0", "1", "2", "3", "4"]
@@ -65,13 +60,12 @@ let questions = [
 
 startButton.addEventListener("click", function() { 
   startPage.setAttribute("style", "display:none");
-  questionsPage.removeAttribute("style", "display:none");
+  questionsPage.removeAttribute("style");
   //start timer here
   timerCount = 100;
   startTimer();
   populateQuestionPage(questionsIndex); //questionsIndex is 0
 })
-
 
     //REMEMBER: questionsIndex is the parameter idx, which is essentially 0
 function populateQuestionPage(idx) {   //idx is a placeholder: AS IN PARAMETERS ARE PLACEHOLDERS - in this case = questionsIndex aka 0
@@ -81,11 +75,9 @@ function populateQuestionPage(idx) {   //idx is a placeholder: AS IN PARAMETERS 
   populateAnswerButtons(currentAnswers) 
 }
 
-
 function forQuestionPageArrayTitle(obj) {
   questionText.textContent = obj.title
 }
-
 
 function populateAnswerButtons(arr) { //arr is equal to currentAnswers
     for (let i = 0; i < arr.length; i++) {
@@ -97,113 +89,74 @@ function populateAnswerButtons(arr) { //arr is equal to currentAnswers
 
 
 function checkAnswerAndSeeIfCorrect(event) {  //e equals the word "event"
-    // const answerButtons = document.getElementsByClassName("answer-button") //not being used
-      if (event.target.textContent === questions[questionsIndex].answer) {
-        score++
-        questionsIndex++
-        scoreBoard.textContent = "Score: " + score; 
-      //   populateQuestionPage(questionsIndex)
-      //  if (event.target.textContent !== questions[questionsIndex].answer) 
-      //   timerElement.textContent = timerCount - 10;
-        populateQuestionPage(questionsIndex);
-      // WHAT IS THE EXIT CONDITION?
-        if (questionsIndex === 4) {
-          clearInterval(timer);
-          thisButton.addEventListener("click", function() {
-          highScoresPage.removeAttribute("style");
-          questionsPage.setAttribute("style", "display:none");
-        renderScoreToDOM();
-      })
-    } 
+  if (event.target.textContent === questions[questionsIndex].answer) {
+    score++; //adds 1 point to score
+    scoreBoard.textContent = "Score: " + score; //fills scoreboard
+  } else {
+    timerCount -= 10; //takes off 10 seconds for wrong answer
+  }
+//questionsIndex must be outside the if statement for wrong answers to trigger next question
+  questionsIndex++; //generates next question
+  if (questionsIndex === questions.length) { //will clear the questions at end of array
+    clearInterval(timer); //clears timer clock
+    highScoresPage.removeAttribute("style");
+    questionsPage.setAttribute("style", "display:none");
+    renderScore();
+  } else {
+    populateQuestionPage(questionsIndex); 
   }
 }
 
-let theScoreVariable = []; 
-//this function is trying to create a running list of users as li elements
-function renderScoreToDOM() {
-    
-  // scoreList.innerHTML = ""; //id = "score-list"
-  // scoreCount.textContent = "Score: " + score; //id = "score-count"
-  
-  //for adding new name to li
-  for (let i = 0; i < theScoreVariable.length; i++) {
-    theScoreVariable = theScoreVariable[i];
+//this storage.getItem method is setting up to return the values of "name" and "score" from storage
+function renderScore() {  
+  let fullName = localStorage.getItem("name") //name for key:value created in local storage
+  let fullNameScore = localStorage.getItem("score") //name for key:value created in local storage
 
-    let li = document.createElement("li");
-    li.textContent = theScoreVariable;
-    li.setAttribute("data-index", i);
-
-   /*  li.appendChild();
-    scoreList.appendChild(li); //id = "score-list" */
+  if (!fullName || !fullNameScore) { //
+    return;
   }
 }
 
-//this function is called below
-function init() {
-  let storedScores = JSON.parse(localStorage.getItem("theScoreVariable"));
-  //if scores are retrieved from localStorage, update the list
-  if (storedScores !== null) {
-    theScoreVariable = storedScores;
+saveButton.addEventListener("click", function(event) {
+  event.preventDefault(); //
+
+  let fullName = document.querySelector("#full-name").value; //for adding name to <input>
+
+  if (fullName === "") {
+    // alert("error: Please Enter Name"); //alerts if button pressed without name
+  } else {
+    // displayMessage("success"); to add later with second high scores page
+    const highScoresStr = localStorage.getItem("highScores"); //name for key:value (array) created in storage
+    let highScoresArr = null; 
+
+    if (highScoresStr) {
+      highScoresArr = JSON.parse(highScoresStr); //pulls from key:value saved on storage
+    } else {
+      highScoresArr = []; //user's name and score in an array
+    }
+    //adds the user's name and score to existing highScoresArr array
+    highScoresArr.push({ 
+      name: fullName,
+      score: score
+
+  });
+    //will sort array index by score value
+    highScoresArr = highScoresArr.sort(function(user1, user2) { 
+      if (user1.score < user2.score) {
+        return 1;
+      } else {
+        return -1;
+      }
+      
+  });
+    //SETS .... NOT "GETS" .... the localStorage highScores key:value to storage
+    localStorage.setItem("highScores", JSON.stringify(highScoresArr));
+
+    renderScore();
   }
-
-  renderScoreToDOM();
-}
-
-
-function storedScoresFunction() { 
-  // Stringify and set key in localStorage to todos array
-  localStorage.setItem("Scores", JSON.stringify(theScoreVariable));
-}
-
-// let scoreEntryButton = document.getElementById("save-btn");
-
-scoreForm.button.addEventListener("click", function(event) {
-event.preventDefault();
-
-let scoreInput = scoreText.value.trim();
-
-if (scoreInput === "") {
-  return;
-}
-  
-theScoreVariable.push(scoreInput);
-scoreText.value = "";
-
-storedScoresFunction();
-renderScoreToDOM();
-});
-
-scoreList.addEventListener("click", function(event) {
-  let element = event.target;
-
-  if (element.matches("button") === true) {
-
-    let index = element.parent.Element.getAttribute("data-index");
-    todos.splice(index, 1);
-
-    storedScoresFunction();
-    renderScoreToDOM();
-  }
-});
-
-init()
-
-
-//   localStorage.setItem("highScores", JSON.stringify(highScores));
-//   window.location.assign("/");
-  
-// }
-// };
-
-// const highScores = JSON.parse(localStorage.getItem("highScores")) || [];
-// let recentScore = localStorage.getItem("recentScore")
-
-// const maxHighScore = 5;
-
-// user.addEventListener("keyup", () => {
-//   saveButton.disabled = !user.value;
-// });
-
+  userName.textContent = fullName;
+  scoreCount.textContent = score;
+})
 
 
 // The setTimer function starts and stops the timer 
@@ -212,63 +165,22 @@ function startTimer() {
   timer = setInterval (function() {
     timerCount--;
     timerElement.textContent = timerCount;
-    // if (timerCount >= 0) {
-    //   // Tests if win condition is met
-    //   // if (isWin && timerCount > 0) {
-    //   // Clears interval and stops timer
-    //     clearInterval(timer);
-    //     endQuiz();
-    //   }
-    // }
-    // Tests if time has run out
+      // Tests if time has run out
     if (timerCount === 0) {
-    //   // Clears interval
+     // Clears interval
       clearInterval(timer);
-    //   loseQuiz()
       alert("Take Quiz Again")
       populateQuestionsPage();
-
     }
   }, 1000);
 }
       
-
-
-
-
-// var hasStorage = (function() {
-//   try {
-//     localStorage.setItem(mod, mod);
-//     localStorage.removeItem(mod);
-//     return true;
-//   } catch (exception) {
-//     return false;
-//   }
-// }());
-
-
-
-
-
-//will need if statement for when questionsIndex is done instead of it rotating back around to beginning of array
-      // for (let i = 0; i < answerButtons.length; i++) {
-      //   console.log(answerButtons[i].textContent)
-      //   answerbuttons[i].addEventListener("click", function(e) {
-      //   e.preventDefault
-      // })
-
-
-
-// // Bonus: Add reset button
+//reset button - want to add later
 // var resetButton = document.querySelector(".reset-button");
 
-// function resetQuiz() {
-// // Resets win and loss counts
-// winCounter = 0;
-// loseCounter = 0;
-// // Renders win and loss counts and sets them into client storage
-// setWins()
-// setLosses()
+// function resetQuiz()
+
+// // Renders scores and sets them into client storage
 // }
 // // Attaches event listener to button
 // resetButton.addEventListener("click", resetQuiz)

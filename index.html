@@ -41,30 +41,41 @@
 
     <div class ="high-scores-page" style="display:none">
 
-        <!-- <div class="card"> -->
+        <div class="card">
 
             <h1>High Score</h1>
-            </h2>
-            <form id="score-form" method="POST">
+            
+            <form id="score-form" 
+                method="POST">
 
                 <div class="input-name">
-                <label for="score-text">Add Your Name:</label>
+
+                    <label for="score-text">Add Your Name:</label>
+                    <input type="text" name="full-name" id="full-name" placeholder="Full Name" />
 
 
-                <input type="text" name="full-name" id="full-name" placeholder="Full Name" />
+                    <button id="save-btn">Save Score</button> 
 
-
-                <button onclick="" class="btn" id="save-btn"  >Save Score</button>  <!-- onclick="saveScore(event)" -->    <!-- disabled -->
                 </div>
 
             </form>
 
-            <p>HIGH SCORES LIST: <span id="score-count">0</span>
-            </p><!--                        scoreCount -->
+            <div class="high-score-card">
+                <h2>YOUR SCORE</h2>
+                <p>NAME <span id="user-name"></span></p>
+            
+                <p>SCORE <span id="score-count"></span>
+                </p>
+<!-- may need a div without anything in it that i'll add elements to with js -->
+                <ul id="score-lists"></ul> <!-- scoreList -->
 
-            <ul id="score-list"></ul> <!-- scoreList -->
 
-        <!-- </div> -->
+            </div>
+
+        </div>  
+
+            
+        
     </div>
 
     
