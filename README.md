@@ -24,5 +24,6 @@ Links:
 
 ---
 Screenshot:
-![Alt text](.\assets\Screenshot.png)
+![Alt text](./assets/Screenshot.png)
 
+---
