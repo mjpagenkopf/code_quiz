@@ -17,12 +17,12 @@ Project Assignment was to create a multiple choice quiz that is timed and cycles
 ---
 
 Links: 
-    [For Access to Live Site](https://mjpagenkopf.github.io/code_quiz/)
+[For Access to Live Site](https://mjpagenkopf.github.io/code_quiz/)
 
 --
-    [For Access to Repository](https://github.com/mjpagenkopf/code_quiz/)
+[For Access to Repository](https://github.com/mjpagenkopf/code_quiz)
 
---
-
-![Alt text](\assets\Screenshot.png\ "Quiz")
+---
+Screenshot:
+![Alt text](.\assets\Screenshot.png)
 
